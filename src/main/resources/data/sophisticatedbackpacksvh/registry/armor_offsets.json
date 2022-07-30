@@ -1,0 +1,41 @@
+{
+    "sophisticatedbackpacks:backpack": {
+        "default": {
+            "x": -0.04
+        }
+    },
+    "sophisticatedbackpacks:iron_backpack": {
+        "default": {
+            "z": 0.05
+        }
+    },
+    "sophisticatedbackpacks:gold_backpack": {
+        "default": {
+            "z": -0.05
+        }
+    },
+    "sophisticatedbackpacks:diamond_backpack": {
+        "default": {
+            "z": -0.05
+        }
+    },
+    "sophisticatedbackpacks:netherite_backpack": {
+        "default": {
+            "z": -0.05
+        },
+        "overrides": [
+            {
+                "armor": "mod:custom_armor",
+                "offsets": {
+                    "z": 0.2
+                }
+            },
+            {
+                "armor": ["mod:custom_armor1", "mod:custom_armor2", "mod:custom_armor3"],
+                "offsets": {
+                    "z": 0.15
+                }
+            }
+        ]
+    }
+}
