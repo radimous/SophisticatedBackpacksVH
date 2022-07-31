@@ -2,6 +2,7 @@ package net.p3pp3rf1y.sophisticatedbackpacksvh.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -28,7 +29,8 @@ import net.p3pp3rf1y.sophisticatedcore.renderdata.RenderInfo;
 
 import static net.p3pp3rf1y.sophisticatedbackpacks.client.render.BackpackModel.CHILD_SCALE;
 
-public class IronBackpackModel<T extends Entity> extends EntityModel<T> implements IBackpackModel {
+public class
+IronBackpackModel<T extends Entity> extends EntityModel<T> implements IBackpackModel {
 	private static final ResourceLocation NO_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_no_tint.png");
 	private static final ResourceLocation MAIN_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_main.png");
 	private static final ResourceLocation ACCENT_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_accent.png");
@@ -69,8 +71,17 @@ public class IronBackpackModel<T extends Entity> extends EntityModel<T> implemen
 	}
 
 	@Override
-	public <L extends LivingEntity, M extends HumanoidModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
-		parentModel.body.translateAndRotate(poseStack);
+	public <L extends LivingEntity, M extends EntityModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
+		if (parentModel instanceof HumanoidModel<?> humanoidModel) {
+			humanoidModel.body.translateAndRotate(poseStack);
+		} else {
+			if (livingEntity.isCrouching()) {
+				poseStack.translate(0D, 0.2D, 0D);
+				poseStack.mulPose(Vector3f.XP.rotationDegrees(90F / (float) Math.PI));
+			}
+
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+		}
 
 		float yOffset = -0.85f;
 

@@ -65,8 +65,17 @@ public class BasicBackpackModel<T extends Entity> extends EntityModel<T> impleme
 	}
 
 	@Override
-	public <L extends LivingEntity, M extends HumanoidModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
-		parentModel.rightLeg.translateAndRotate(poseStack);
+	public <L extends LivingEntity, M extends EntityModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
+		if (parentModel instanceof HumanoidModel<?>humanoidModel) {
+			humanoidModel.rightLeg.translateAndRotate(poseStack);
+		} else {
+			if (livingEntity.isCrouching()) {
+				poseStack.translate(0D, 0.2D, 0D);
+				poseStack.mulPose(Vector3f.XP.rotationDegrees(90F / (float) Math.PI));
+			}
+
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+		}
 
 		double xOffset = wearsArmor ? -0.2D + BackpackArmorOffsetsManager.getOffsets(ModItems.BACKPACK.get(), livingEntity.getItemBySlot(EquipmentSlot.LEGS).getItem()).map(offsets -> offsets.x).orElse(0D) : -0.2D;
 		float yOffset = -1.20f;

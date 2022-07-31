@@ -76,8 +76,17 @@ public class DiamondBackpackModel<T extends Entity> extends EntityModel<T> imple
 	}
 
 	@Override
-	public <L extends LivingEntity, M extends HumanoidModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
-		parentModel.body.translateAndRotate(poseStack);
+	public <L extends LivingEntity, M extends EntityModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
+		if (parentModel instanceof HumanoidModel<?> humanoidModel) {
+			humanoidModel.body.translateAndRotate(poseStack);
+		} else {
+			if (livingEntity.isCrouching()) {
+				poseStack.translate(0D, 0.2D, 0D);
+				poseStack.mulPose(Vector3f.XP.rotationDegrees(90F / (float) Math.PI));
+			}
+
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+		}
 
 		float yOffset = -0.85f;
 
