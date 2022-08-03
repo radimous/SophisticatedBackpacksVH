@@ -14,25 +14,24 @@ public class BackpackShapeProvider implements BackpackShapes.IShapeProvider {
 
 	private static final Map<Block, BackpackShapes.RotatedShapes> BACKPACK_SHAPES = ImmutableMap.of(
 			ModBlocks.BACKPACK.get(), new BackpackShapes.RotatedShapes(
+					Block.box(4, 2, 6, 12, 4, 6),
+					Block.box(9.5, 0, 3.9, 12.5, 4, 5.9),
+					Block.box(3.5, 0, 3.9, 6.5, 4, 5.9),
+					Block.box(9.5, 0, 10.1, 12.5, 4, 12.1),
+					Block.box(3.5, 0, 10.1, 6.5, 4, 12.1),
+					Block.box(12, 2, 6, 12, 4, 10),
+					Block.box(4, 2, 10, 12, 4, 10),
+					Block.box(4, 2, 6, 4, 4, 10)
+			),
+			ModBlocks.IRON_BACKPACK.get(), new BackpackShapes.RotatedShapes(
 					Block.box(6, 0, 6, 10, 5, 9),
 					Block.box(7.5, 2.8, 8.4, 8.5, 3.8, 9.4)
 			),
-			ModBlocks.IRON_BACKPACK.get(), new BackpackShapes.RotatedShapes(
-					Block.box(4, 1, 6, 4, 3, 10),
-					Block.box(9.5, 0, 5, 11.5, 3, 6),
-					Block.box(4.5, 0, 5, 6.5, 3, 6),
-					Block.box(9.5, 0, 10, 11.5, 3, 11),
-					Block.box(4.5, 0, 10, 6.5, 3, 11),
-					Block.box(4, 1, 10, 12, 3, 10),
-					Block.box(4, 1, 6, 12, 3, 6),
-					Block.box(4, 1, 6, 12, 3, 10),
-					Block.box(12, 1, 6, 12, 3, 10)
-			),
 			ModBlocks.GOLD_BACKPACK.get(), new BackpackShapes.RotatedShapes(
-					Block.box(5.5, 0.0125, 5.9375, 11.5, 2.0125, 8.9375),
-					Block.box(6.5, 0.0125, 8.9375, 10.5, 2.0125, 9.9375),
-					Block.box(7.5, 1.2625, 6.9375, 9.5, 2.2625, 7.9375),
-					Block.box(4, 0.0375, 6.9125, 12, 0.2875, 8.9125)
+					Block.box(3, 0, 6.5, 7, 6, 9.5),
+					Block.box(4.5, 3.8, 8.9, 5.5, 4.8, 9.9),
+					Block.box(10.5, 3.8, 8.9, 11.5, 4.8, 9.9),
+					Block.box(9, 0, 6.5, 13, 6, 9.5)
 			),
 			ModBlocks.DIAMOND_BACKPACK.get(), new BackpackShapes.RotatedShapes(
 					Block.box(4, 0, 5, 12, 6, 10),

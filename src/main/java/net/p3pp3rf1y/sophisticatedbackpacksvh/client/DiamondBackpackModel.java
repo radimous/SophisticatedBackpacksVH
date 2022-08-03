@@ -102,17 +102,13 @@ public class DiamondBackpackModel<T extends Entity> extends EntityModel<T> imple
 		poseStack.scale(1.01f, 1.01f, 1.01f);
 
 		if (wearsArmor) {
-			double zOffset = BackpackArmorOffsetsManager.getOffsets(ModItems.DIAMOND_BACKPACK.get(), livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem()).map(offsets -> offsets.z).orElse(0D);
+			double zOffset = -BackpackArmorOffsetsManager.getOffsets(ModItems.DIAMOND_BACKPACK.get(), livingEntity.getItemBySlot(EquipmentSlot.CHEST).getItem()).map(offsets -> offsets.z).orElse(0D);
 			poseStack.translate(0, 0, zOffset);
-		}
-
-		if (livingEntity instanceof Player) {
-			return;
 		}
 	}
 
 	@Override
-	public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, int mainColor, int accentColor, Item backpackItem, RenderInfo renderInfo) {
+	public <L extends LivingEntity, M extends EntityModel<L>> void render(M parentModel, LivingEntity livingEntity, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int mainColor, int accentColor, Item backpackItem, RenderInfo renderInfo) {
 		VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(NO_TINT_TEXTURE));
 
 		if (mainColor == BackpackWrapper.DEFAULT_CLOTH_COLOR) {

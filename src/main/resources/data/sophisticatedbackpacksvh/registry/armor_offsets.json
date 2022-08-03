@@ -1,27 +1,27 @@
 {
     "sophisticatedbackpacks:backpack": {
         "default": {
-            "x": -0.04
+            "z": 0.05
         }
     },
     "sophisticatedbackpacks:iron_backpack": {
         "default": {
-            "z": 0.05
+            "x": 0.05
         }
     },
     "sophisticatedbackpacks:gold_backpack": {
         "default": {
-            "z": -0.05
+            "z": 0.05
         }
     },
     "sophisticatedbackpacks:diamond_backpack": {
         "default": {
-            "z": -0.05
+            "z": 0.05
         }
     },
     "sophisticatedbackpacks:netherite_backpack": {
         "default": {
-            "z": -0.05
+            "z": 0.05
         },
         "overrides": [
             {
