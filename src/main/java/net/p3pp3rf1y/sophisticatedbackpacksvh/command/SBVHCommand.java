@@ -27,7 +27,7 @@ public class SBVHCommand {
 				ServerPlayer player = context.getSource().getPlayerOrException();
 				ItemStack mainHandItem = player.getMainHandItem();
 				if (mainHandItem.getItem() instanceof BackpackItem) {
-					SnapshotStorage.get().makeSnapshot(mainHandItem);
+					SnapshotStorage.get().createSnapshot(mainHandItem);
 				}
 				return 0;
 			});

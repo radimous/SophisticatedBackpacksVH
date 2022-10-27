@@ -37,10 +37,11 @@ public class SnapshotStorage extends SavedData {
 		return emptySnapshotStorage;
 	}
 
-	public void makeSnapshot(ItemStack backpack) {
-		backpack.getCapability(CapabilityBackpackWrapper.getCapabilityInstance()).ifPresent(backpackWrapper ->
-				backpackWrapper.getContentsUuid().ifPresent(backpackUuid ->
-						backpackSnapshots.put(backpackUuid, BackpackStorage.get().getOrCreateBackpackContents(backpackUuid).copy())));
+	public void createSnapshot(ItemStack backpack) {
+		backpack.getCapability(CapabilityBackpackWrapper.getCapabilityInstance()).ifPresent(backpackWrapper -> backpackWrapper.getContentsUuid().ifPresent(backpackUuid -> {
+			backpackSnapshots.put(backpackUuid, BackpackStorage.get().getOrCreateBackpackContents(backpackUuid).copy());
+			setDirty();
+		}));
 	}
 
 	public void restoreContentsFromSnapshot(ItemStack backpack) {
