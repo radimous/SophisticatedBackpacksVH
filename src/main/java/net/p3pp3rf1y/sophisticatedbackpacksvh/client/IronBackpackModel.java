@@ -27,30 +27,43 @@ import net.p3pp3rf1y.sophisticatedbackpacks.client.render.IBackpackModel;
 import net.p3pp3rf1y.sophisticatedbackpacks.init.ModItems;
 import net.p3pp3rf1y.sophisticatedcore.renderdata.RenderInfo;
 
+import javax.annotation.Nullable;
+
 import static net.p3pp3rf1y.sophisticatedbackpacks.client.render.BackpackModel.CHILD_SCALE;
 
 public class IronBackpackModel<T extends Entity> extends EntityModel<T> implements IBackpackModel {
 	private static final ResourceLocation NO_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_no_tint.png");
 	private static final ResourceLocation MAIN_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_main.png");
 	private static final ResourceLocation ACCENT_TINT_TEXTURE = new ResourceLocation(SophisticatedBackpacks.MOD_ID, "textures/block/iron_backpack_accent.png");
-	private final ModelPart bothTints;
-	private final ModelPart noTint;
+	private final ModelPart leftClip;
+	private final ModelPart leftPouch;
+	private final ModelPart rightClip;
+	private final ModelPart rightPouch;
 
 	public IronBackpackModel(ModelPart root) {
-		bothTints = root.getChild("bothTints");
-		noTint = root.getChild("noTint");
+		leftClip = root.getChild("leftClip");
+		leftPouch = root.getChild("leftPouch");
+		rightClip = root.getChild("rightClip");
+		rightPouch = root.getChild("rightPouch");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		partdefinition.addOrReplaceChild("bothTints", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -5.0F, 7.0F, 4.0F, 5.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+		PartDefinition leftClip = partdefinition.addOrReplaceChild("leftClip", CubeListBuilder.create(), PartPose.offset(0.0F, 20.35F, 0.0F));
+		leftClip.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 9).addBox(-0.5F, -1.15F, -6.9F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.0F));
 
-		partdefinition.addOrReplaceChild("noTint", CubeListBuilder.create().texOffs(0, 8).addBox(-8.5F, -3.8F, 6.6F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 24.0F, -8.0F));
+		PartDefinition rightPouch = partdefinition.addOrReplaceChild("rightPouch", CubeListBuilder.create(), PartPose.offset(0.0F, 20.35F, 0.0F));
+		rightPouch.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.35F, -6.5F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
+
+		PartDefinition rightClip = partdefinition.addOrReplaceChild("rightClip", CubeListBuilder.create(), PartPose.offset(0.0F, 20.35F, 0.0F));
+		rightClip.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 9).addBox(-0.5F, -1.15F, -6.9F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, -1.5708F, 0.0F));
+
+		PartDefinition leftPouch = partdefinition.addOrReplaceChild("leftPouch", CubeListBuilder.create(), PartPose.offset(0.0F, 20.35F, 0.0F));
+		leftPouch.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -2.35F, -6.5F, 4.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 1.5708F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 16, 16);
-
 	}
 
 	@Override
@@ -60,40 +73,16 @@ public class IronBackpackModel<T extends Entity> extends EntityModel<T> implemen
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		bothTints.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-		noTint.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+		//noop
 	}
 
 	@Override
 	public <L extends LivingEntity, M extends EntityModel<L>> void translateRotateAndScale(M parentModel, LivingEntity livingEntity, PoseStack poseStack, boolean wearsArmor) {
-		if (parentModel instanceof HumanoidModel<?>humanoidModel) {
-			humanoidModel.rightLeg.translateAndRotate(poseStack);
-		} else {
-			if (livingEntity.isCrouching()) {
-				poseStack.translate(0D, 0.2D, 0D);
-				poseStack.mulPose(Vector3f.XP.rotationDegrees(90F / (float) Math.PI));
-			}
-
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
-		}
-
-		double xOffset = wearsArmor ? -0.2D - BackpackArmorOffsetsManager.getOffsets(ModItems.IRON_BACKPACK.get(), livingEntity.getItemBySlot(EquipmentSlot.LEGS).getItem()).map(offsets -> offsets.x).orElse(0D) : -0.2D;
-		float yOffset = -1.20f;
-		if (livingEntity.isBaby()) {
-			poseStack.scale(CHILD_SCALE, CHILD_SCALE, CHILD_SCALE);
-			yOffset = -0.6f;
-			xOffset *= 0.5f;
-		}
-
-
-		poseStack.translate(xOffset, yOffset, -0.01);
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+		//noop - translation done in render because of two legs it needs to be tied to
 	}
 
 	@Override
 	public <L extends LivingEntity, M extends EntityModel<L>> void render(M parentModel, LivingEntity livingEntity, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int mainColor, int accentColor, Item backpackItem, RenderInfo renderInfo) {
-		VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(NO_TINT_TEXTURE));
-
 		if (mainColor == BackpackWrapper.DEFAULT_CLOTH_COLOR) {
 			mainColor = DefaultBackpackColors.getDefaultMainColor(backpackItem);
 		}
@@ -102,8 +91,6 @@ public class IronBackpackModel<T extends Entity> extends EntityModel<T> implemen
 			accentColor = DefaultBackpackColors.getDefaultAccentColor(backpackItem);
 		}
 
-		noTint.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
-
 		float accentRed = (accentColor >> 16 & 255) / 255.0F;
 		float accentGreen = (accentColor >> 8 & 255) / 255.0F;
 		float accentBlue = (accentColor & 255) / 255.0F;
@@ -111,11 +98,55 @@ public class IronBackpackModel<T extends Entity> extends EntityModel<T> implemen
 		float mainGreen = (mainColor >> 8 & 255) / 255.0F;
 		float mainBlue = (mainColor & 255) / 255.0F;
 
+		poseStack.pushPose();
+		translate(livingEntity, poseStack, parentModel instanceof HumanoidModel<?> humanoidModel ? humanoidModel.rightLeg : null, 1);
+
+		VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(NO_TINT_TEXTURE));
+
+		rightClip.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
+
 		vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(MAIN_TINT_TEXTURE));
-		bothTints.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, mainRed, mainGreen, mainBlue, 1);
+		rightPouch.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, mainRed, mainGreen, mainBlue, 1);
 
 		vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(ACCENT_TINT_TEXTURE));
-		bothTints.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, accentRed, accentGreen, accentBlue, 1);
+		rightPouch.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, accentRed, accentGreen, accentBlue, 1);
+		poseStack.popPose();
+
+		poseStack.pushPose();
+		translate(livingEntity, poseStack, parentModel instanceof HumanoidModel<?> humanoidModel ? humanoidModel.leftLeg : null, -1);
+
+		vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(NO_TINT_TEXTURE));
+		leftClip.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY);
+
+		vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(MAIN_TINT_TEXTURE));
+		leftPouch.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, mainRed, mainGreen, mainBlue, 1);
+
+		vertexBuilder = buffer.getBuffer(RenderType.entityCutoutNoCull(ACCENT_TINT_TEXTURE));
+		leftPouch.render(poseStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, accentRed, accentGreen, accentBlue, 1);
+		poseStack.popPose();
+	}
+
+	private void translate(LivingEntity livingEntity, PoseStack poseStack, @Nullable ModelPart legPart, int sideMultiplier) {
+		if (legPart != null) {
+			legPart.translateAndRotate(poseStack);
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(90F ));
+		} else {
+			if (livingEntity.isCrouching()) {
+				poseStack.translate(0D, 0.2D, 0D);
+			}
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
+		}
+
+		double zOffset = !livingEntity.getItemBySlot(EquipmentSlot.LEGS).isEmpty() ? -0.15D  + BackpackArmorOffsetsManager.getOffsets(ModItems.GOLD_BACKPACK.get(), livingEntity.getItemBySlot(EquipmentSlot.LEGS).getItem()).map(offsets -> offsets.z).orElse(0D) : -0.15D;
+		float yOffset = -1.20f;
+		if (livingEntity.isBaby()) {
+			poseStack.scale(CHILD_SCALE, CHILD_SCALE, CHILD_SCALE);
+			yOffset = -0.6f;
+			zOffset *= 0.5f;
+		}
+
+		poseStack.translate(0.01, yOffset, zOffset * -sideMultiplier);
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
 	}
 
 	@Override

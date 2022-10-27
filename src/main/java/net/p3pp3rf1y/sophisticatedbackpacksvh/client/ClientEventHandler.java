@@ -23,6 +23,8 @@ import java.util.Map;
 import static net.p3pp3rf1y.sophisticatedbackpacks.client.ClientEventHandler.BACKPACK_LAYER;
 
 public class ClientEventHandler {
+	private ClientEventHandler() {}
+
 	public static final ModelLayerLocation BASIC_BACKPACK_LAYER = new ModelLayerLocation(new ResourceLocation(SophisticatedBackpacksVH.MOD_ID, "basic_backpack"), "main");
 	public static final ModelLayerLocation IRON_BACKPACK_LAYER = new ModelLayerLocation(new ResourceLocation(SophisticatedBackpacksVH.MOD_ID, "iron_backpack"), "main");
 	public static final ModelLayerLocation GOLD_BACKPACK_LAYER = new ModelLayerLocation(new ResourceLocation(SophisticatedBackpacksVH.MOD_ID, "gold_backpack"), "main");
@@ -36,6 +38,7 @@ public class ClientEventHandler {
 		BackpackModelManager.registerBackpackModelProvider(new IBackpackModelProvider() {
 			private final Map<Item, IBackpackModel> backpackModels = new HashMap<>();
 			private IBackpackModel defaultModel;
+
 			@Override
 			public void initModels() {
 				if (defaultModel == null) {
