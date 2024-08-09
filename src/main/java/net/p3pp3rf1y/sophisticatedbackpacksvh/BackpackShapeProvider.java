@@ -9,6 +9,7 @@ import net.p3pp3rf1y.sophisticatedcore.util.RotatedShapes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BackpackShapeProvider implements BackpackShapes.IShapeProvider {
 
@@ -50,7 +51,7 @@ public class BackpackShapeProvider implements BackpackShapes.IShapeProvider {
 			)
 	);
 
-	private static final Map<Integer, VoxelShape> SHAPES = new HashMap<>();
+	private static final Map<Integer, VoxelShape> SHAPES = new ConcurrentHashMap<>();
 
 	@Override
 	public VoxelShape getShape(Block backpackBlock, Direction dir, boolean leftTank, boolean rightTank, boolean battery) {
